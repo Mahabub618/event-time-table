@@ -30,16 +30,14 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
 
   venueStartIndex = 0;
   venueLimit = 5;
-  totalVenuesLoaded = 0;
   isLoadingVenues = false;
   isAllVenuesLoaded = false;
 
   events: CalendarEvent[] = [];
 
-  selectedDate: Date = new Date('2024-12-01');
+  selectedDate: Date = new Date();
   isLoadingDays = false;
 
-  // For infinite scroll of days
   private readonly DAY_BATCH_SIZE = 14;
   private readonly SCROLL_THRESHOLD = 100;
 
@@ -52,12 +50,9 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Center the selected date if possible, or just ensure it's visible
   }
 
   initializeDays() {
-    // Load some past days and some future days.
-    // Let's start 7 days before selectedDate
     const startDate = new Date(this.selectedDate);
     startDate.setDate(startDate.getDate() - 7);
 
@@ -65,7 +60,6 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
     this.eventDataService.getDays(startDate, this.DAY_BATCH_SIZE).subscribe(data => {
       this.days = data;
       this.isLoadingDays = false;
-      // After view updates, we might want to scroll to the selected date
       setTimeout(() => this.scrollToSelectedDate(), 0);
     });
   }
@@ -73,11 +67,6 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
   scrollToSelectedDate() {
     if (!this.dateScrollContainer) return;
     const container = this.dateScrollContainer.nativeElement;
-    // Simple logic: find the index of selected date and scroll there
-    // This assumes each day item has a fixed width or we can find the element
-    // For now, let's just scroll to center roughly if we can't find the element easily without more DOM queries
-    // Better: find the element in the list.
-    // We can use a data attribute on the day elements.
     const selectedEl = container.querySelector('.date-item.selected');
     if (selectedEl) {
         selectedEl.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
@@ -109,7 +98,6 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
       this.days = [...newDays, ...this.days];
       this.isLoadingDays = false;
 
-      // Adjust scroll position to maintain visual stability
       setTimeout(() => {
         const newScrollWidth = this.dateScrollContainer.nativeElement.scrollWidth;
         this.dateScrollContainer.nativeElement.scrollLeft = oldScrollLeft + (newScrollWidth - oldScrollWidth);
@@ -132,12 +120,14 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
 
   selectDate(day: Day) {
     this.selectedDate = day.date;
-    // Here we would reload events for the selected date if the view depends on it
-    // Currently the view seems to show venues and events.
-    // If events are date-specific, we should filter or fetch them here.
-    // The current implementation of getEventsForVenue doesn't seem to filter by date in the component,
-    // but usually it should. Assuming events are loaded for the view.
-    // For this task, I'll just update the selectedDate.
+    this.reloadEvents();
+  }
+
+  reloadEvents() {
+    this.events = [];
+    if (this.venues.length > 0) {
+        this.fetchEventsForVenues(this.venues);
+    }
   }
 
   fetchTimeSlots() {
@@ -166,7 +156,7 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
   }
 
   fetchEventsForVenues(venues: string[]) {
-    this.eventDataService.getEvents(venues).subscribe(newEvents => {
+    this.eventDataService.getEvents(this.selectedDate, venues).subscribe(newEvents => {
       this.events = [...this.events, ...newEvents];
     });
   }
@@ -196,9 +186,15 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
 
     const pxPerMinute = 60 / 15;
 
+    const span = event.span || 1;
+    // Width calculation: 100% per column
+    const width = `${span * 100}%`;
+
     return {
       top: `${offsetMinutes * pxPerMinute}px`,
-      height: `${duration * pxPerMinute}px`
+      height: `${duration * pxPerMinute}px`,
+      width: width,
+      zIndex: span > 1 ? 20 : 10
     };
   }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { MockDataService } from './mock-data.service';
 
 export interface Day {
     date: Date;
@@ -12,35 +13,7 @@ export interface Day {
 })
 export class EventDataService {
 
-    private allEvents: any[] = [];
-    private allVenues: string[] = [];
-
-    constructor() {
-        this.generateMockData();
-    }
-
-    private generateMockData() {
-        for (let i = 1; i <= 20; i++) {
-            this.allVenues.push(`Venue ${i}`);
-        }
-
-        for (let i = 1; i <= 30; i++) {
-            const venueIndex = (i - 1) % this.allVenues.length; // Distribute events round-robin or random
-            const venue = this.allVenues[venueIndex];
-
-            const startHour = 8 + (i % 10); // 8am to 5pm
-            const startTime = `${startHour.toString().padStart(2, '0')}:00`;
-            const endTime = `${(startHour + 1).toString().padStart(2, '0')}:00`;
-
-            this.allEvents.push({
-                id: i.toString(),
-                title: `Event ${i}`,
-                startTime: startTime,
-                endTime: endTime,
-                venue: venue,
-                description: `${startTime} - ${endTime}`
-            });
-        }
+    constructor(private mockDataService: MockDataService) {
     }
 
     getDays(startDate: Date, count: number = 7): Observable<Day[]> {
@@ -68,14 +41,16 @@ export class EventDataService {
     }
 
     getVenues(startIndex: number, limit: number): Observable<string[]> {
-        const venues = this.allVenues.slice(startIndex, startIndex + limit);
+        const allVenues = this.mockDataService.getAllVenues();
+        const venues = allVenues.slice(startIndex, startIndex + limit);
         return of(venues).pipe(delay(500));
     }
 
-    getEvents(venues?: string[]): Observable<any[]> {
-        let events = this.allEvents;
+    getEvents(date: Date, venues?: string[]): Observable<any[]> {
+        let events = this.mockDataService.getEventsForDate(date);
+
         if (venues && venues.length > 0) {
-            events = this.allEvents.filter(e => venues.includes(e.venue));
+            events = events.filter(e => venues.includes(e.venue));
         }
         return of(events).pipe(delay(600));
     }

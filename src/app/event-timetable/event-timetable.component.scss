@@ -254,6 +254,11 @@
     align-items: center;
     text-align: center;
     border-radius: 4px;
+
+    &.multi-venue {
+        border: 2px dashed #512da8;
+        background-color: #b39ddb;
+    }
 }
 
 .event-title {
