@@ -47,7 +47,24 @@ export class EventDataService {
     }
 
     getEvents(date: Date, venues?: string[]): Observable<any[]> {
+        const dateKey = `events_${date.toDateString()}`;
+        const cachedData = localStorage.getItem(dateKey);
+
+        if (cachedData) {
+            let events = JSON.parse(cachedData);
+            events = events.map((e: any) => ({
+                ...e,
+                date: new Date(e.date)
+            }));
+
+            if (venues && venues.length > 0) {
+                events = events.filter((e: any) => venues.includes(e.venue));
+            }
+            return of(events);
+        }
+
         let events = this.mockDataService.getEventsForDate(date);
+        localStorage.setItem(dateKey, JSON.stringify(events));
 
         if (venues && venues.length > 0) {
             events = events.filter(e => venues.includes(e.venue));
