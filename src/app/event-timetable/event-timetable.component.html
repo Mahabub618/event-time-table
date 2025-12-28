@@ -43,10 +43,7 @@
 
                         <div class="event-card" *ngFor="let event of getEventsForVenue(venue)"
                             [class.multi-venue]="event.isMultiVenue"
-                            [style.top]="getEventStyle(event).top"
-                            [style.height]="getEventStyle(event).height"
-                            [style.width]="getEventStyle(event).width"
-                            [style.z-index]="getEventStyle(event).zIndex">
+                            [ngStyle]="event | eventStyle:(allTimeSlots[0] || '08:00')">
                             <div class="event-content">
                                 <div class="event-time">{{ event.description }}</div>
                                 <div class="event-title">{{ event.title }}</div>

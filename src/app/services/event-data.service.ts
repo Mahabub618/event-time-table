@@ -37,13 +37,13 @@ export class EventDataService {
             const time = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
             timeSlots.push(time);
         }
-        return of(timeSlots).pipe(delay(500));
+        return of(timeSlots).pipe(delay(10));
     }
 
     getVenues(startIndex: number, limit: number): Observable<string[]> {
         const allVenues = this.mockDataService.getAllVenues();
         const venues = allVenues.slice(startIndex, startIndex + limit);
-        return of(venues).pipe(delay(500));
+        return of(venues).pipe(delay(10));
     }
 
     getEvents(date: Date, venues?: string[]): Observable<any[]> {
@@ -69,6 +69,6 @@ export class EventDataService {
         if (venues && venues.length > 0) {
             events = events.filter(e => venues.includes(e.venue));
         }
-        return of(events).pipe(delay(600));
+        return of(events).pipe(delay(10));
     }
 }
