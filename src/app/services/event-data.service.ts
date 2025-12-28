@@ -26,7 +26,7 @@ export class EventDataService {
             days.push({ date, label });
         }
 
-        return of(days).pipe(delay(10));
+        return of(days).pipe(delay(500));
     }
 
     getTimeSlots(): Observable<string[]> {
