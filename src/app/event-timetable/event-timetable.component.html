@@ -1,57 +1,57 @@
 <div class="timetable-container">
-    <div class="tabs-wrapper">
-        <div class="animation-wrapper" *ngIf="!isLoading" [@slideInOut]="{ value: '', params: {
-                 enterFrom: direction === 'next' ? '100' : '-100',
-                 leaveTo: direction === 'next' ? '-100' : '100'
-             } }">
-            <mat-tab-group animationDuration="0ms" class="date-tabs" #tabGroup>
-                <mat-tab *ngFor="let day of days">
-                    <ng-template mat-tab-label>
-                        <div class="tab-label">
-                            <span class="day-name">{{ day.label }}</span>
-                            <span class="date-text">Date: {{ day.date | date:'yyyy-MM-dd' }}</span>
+    <div class="date-header-wrapper">
+        <div class="date-scroll-container" #dateScrollContainer (scroll)="onDateScroll($event)">
+            <div class="date-items-row">
+                <div class="date-item" *ngFor="let day of days"
+                     [class.selected]="day.date.toDateString() === selectedDate.toDateString()"
+                     (click)="selectDate(day)">
+                    <div class="tab-label-content">
+                        <span class="day-name">{{ day.label }}</span>
+                        <span class="date-text">Date: {{ day.date | date:'yyyy-MM-dd' }}</span>
+                    </div>
+                    <div class="ink-bar" *ngIf="day.date.toDateString() === selectedDate.toDateString()"></div>
+                </div>
+            </div>
+        </div>
+        <div class="loading-overlay" *ngIf="isLoadingDays">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <div class="schedule-viewport" #scheduleViewport (scroll)="onScroll($event)">
+        <div class="schedule-content">
+
+            <div class="venue-header-row">
+                <div class="time-header-cell"></div> <!-- Empty corner -->
+                <div class="venue-header-cell" *ngFor="let venue of venues">
+                    {{ venue }}
+                </div>
+            </div>
+
+            <div class="schedule-body">
+                <div class="time-column">
+                    <div class="time-cell" *ngFor="let time of allTimeSlots">
+                        {{ time }}
+                    </div>
+                </div>
+
+
+                <div class="events-grid">
+                    <div class="grid-column" *ngFor="let venue of venues">
+                        <div class="grid-cell" *ngFor="let time of allTimeSlots">
                         </div>
-                    </ng-template>
 
-                    <div class="schedule-viewport" #scheduleViewport (scroll)="onScroll($event)">
-                        <div class="schedule-content">
-
-                            <div class="venue-header-row">
-                                <div class="time-header-cell"></div> <!-- Empty corner -->
-                                <div class="venue-header-cell" *ngFor="let venue of venues">
-                                    {{ venue }}
-                                </div>
-                            </div>
-
-                            <div class="schedule-body">
-                                <div class="time-column">
-                                    <div class="time-cell" *ngFor="let time of allTimeSlots">
-                                        {{ time }}
-                                    </div>
-                                </div>
-
-
-                                <div class="events-grid">
-                                    <div class="grid-column" *ngFor="let venue of venues">
-                                        <div class="grid-cell" *ngFor="let time of allTimeSlots">
-                                        </div>
-
-                                        <div class="event-card" *ngFor="let event of getEventsForVenue(venue)"
-                                            [style.top]="getEventStyle(event).top"
-                                            [style.height]="getEventStyle(event).height">
-                                            <div class="event-content">
-                                                <div class="event-time">{{ event.description }}</div>
-                                                <div class="event-title">{{ event.title }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="event-card" *ngFor="let event of getEventsForVenue(venue)"
+                            [style.top]="getEventStyle(event).top"
+                            [style.height]="getEventStyle(event).height">
+                            <div class="event-content">
+                                <div class="event-time">{{ event.description }}</div>
+                                <div class="event-title">{{ event.title }}</div>
                             </div>
                         </div>
                     </div>
-
-                </mat-tab>
-            </mat-tab-group>
+                </div>
+            </div>
         </div>
     </div>
 </div>

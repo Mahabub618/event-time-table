@@ -20,17 +20,14 @@ export class EventDataService {
     }
 
     private generateMockData() {
-        // Generate 15-20 venues
         for (let i = 1; i <= 20; i++) {
             this.allVenues.push(`Venue ${i}`);
         }
 
-        // Generate 30 events distributed among venues
         for (let i = 1; i <= 30; i++) {
             const venueIndex = (i - 1) % this.allVenues.length; // Distribute events round-robin or random
             const venue = this.allVenues[venueIndex];
 
-            // Simple logic to vary times
             const startHour = 8 + (i % 10); // 8am to 5pm
             const startTime = `${startHour.toString().padStart(2, '0')}:00`;
             const endTime = `${(startHour + 1).toString().padStart(2, '0')}:00`;
@@ -46,23 +43,22 @@ export class EventDataService {
         }
     }
 
-    getDays(startDate: Date): Observable<Day[]> {
+    getDays(startDate: Date, count: number = 7): Observable<Day[]> {
         const days: Day[] = [];
 
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < count; i++) {
             const date = new Date(startDate);
             date.setDate(startDate.getDate() + i);
             const label = date.toLocaleDateString('en-US', { weekday: 'long' });
             days.push({ date, label });
         }
 
-        // Simulate API delay
         return of(days).pipe(delay(500));
     }
 
     getTimeSlots(): Observable<string[]> {
         const timeSlots: string[] = [];
-        for (let i = 0; i < 96; i++) { // 24 hours * 4 slots/hour = 96 slots
+        for (let i = 0; i < 96; i++) {
             const hour = Math.floor(i / 4);
             const min = (i % 4) * 15;
             const time = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
