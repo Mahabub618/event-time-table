@@ -173,33 +173,4 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
   getEventsForVenue(venue: string): CalendarEvent[] {
     return this.events.filter(e => e.venue === venue);
   }
-
-  getEventStyle(event: CalendarEvent): any {
-    const startMinutes = this.parseTimeToMinutes(event.startTime);
-    const endMinutes = this.parseTimeToMinutes(event.endTime);
-    const duration = endMinutes - startMinutes;
-
-    const firstVisibleSlot = this.allTimeSlots.length > 0 ? this.allTimeSlots[0] : '08:00';
-    const baseStartMinutes = this.parseTimeToMinutes(firstVisibleSlot);
-
-    const offsetMinutes = startMinutes - baseStartMinutes;
-
-    const pxPerMinute = 60 / 15;
-
-    const span = event.span || 1;
-    // Width calculation: 100% per column
-    const width = `${span * 100}%`;
-
-    return {
-      top: `${offsetMinutes * pxPerMinute}px`,
-      height: `${duration * pxPerMinute}px`,
-      width: width,
-      zIndex: span > 1 ? 20 : 10
-    };
-  }
-
-  parseTimeToMinutes(time: string): number {
-    const parts = time.split(':');
-    return parseInt(parts[0]) * 60 + parseInt(parts[1]);
-  }
 }
