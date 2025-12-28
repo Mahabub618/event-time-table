@@ -1,27 +1,56 @@
-# EventTimeTable
+# Event Time Table
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+An interactive event timetable application built with Angular 16 and Angular Material. This application allows users to view event schedules across multiple venues and dates with a smooth, responsive interface.
 
-## Development server
+## 🚀 Live Demo
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Check out the live application here: [https://event-time-table-delta.vercel.app/](https://event-time-table-delta.vercel.app/)
 
-## Code scaffolding
+## ✨ Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Dynamic Timetable**: View events organized by time slots and venues.
+- **Date Navigation**: Scroll through dates to see past and upcoming events.
+- **Venue Management**: Horizontal scrolling for venues to handle large numbers of locations.
+- **Responsive Design**: Built with Angular Material for a consistent look and feel.
+- **Smooth Animations**: Transitions for date changes and interactions.
 
-## Build
+## 🛠️ Tech Stack
+
+- **Framework**: [Angular 16](https://angular.io/)
+- **UI Component Library**: [Angular Material](https://material.angular.io/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: SCSS
+- **Animations**: Angular Animations
+
+## 📦 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/event-time-table.git
+   cd event-time-table
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   ng serve
+   ```
+   Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## 🔨 Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## 📂 Project Structure
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```
+src/
+  app/
+    event-timetable/    # Main component for the timetable view
+    models/             # TypeScript interfaces (Event, Day, etc.)
+    services/           # Data services (EventDataService)
+```
