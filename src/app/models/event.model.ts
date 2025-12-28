@@ -1,8 +1,11 @@
 export interface CalendarEvent {
     id: string;
     title: string;
-    startTime: string; // HH:mm
-    endTime: string;   // HH:mm
+    date: Date;
+    startTime: string;
+    endTime: string;
     venue: string;
+    span?: number;
+    isMultiVenue?: boolean;
     description?: string;
 }
