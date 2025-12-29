@@ -73,6 +73,13 @@ export class EventTimetableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onDateWheel(event: WheelEvent) {
+    if (this.dateScrollContainer) {
+      event.preventDefault();
+      this.dateScrollContainer.nativeElement.scrollLeft += (event.deltaX - event.deltaY);
+    }
+  }
+
   onDateScroll(event: any) {
     const element = event.target;
     if (this.isLoadingDays) return;

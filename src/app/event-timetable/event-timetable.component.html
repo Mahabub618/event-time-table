@@ -1,6 +1,6 @@
 <div class="timetable-container">
     <div class="date-header-wrapper">
-        <div class="date-scroll-container" #dateScrollContainer (scroll)="onDateScroll($event)">
+        <div class="date-scroll-container" #dateScrollContainer (scroll)="onDateScroll($event)" (wheel)="onDateWheel($event)">
             <div class="date-items-row">
                 <div class="date-item" *ngFor="let day of days"
                      [class.selected]="day.date.toDateString() === selectedDate.toDateString()"
