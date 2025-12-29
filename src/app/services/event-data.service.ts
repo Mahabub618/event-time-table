@@ -58,7 +58,8 @@ export class EventDataService {
             }));
 
             if (venues && venues.length > 0) {
-                events = events.filter((e: any) => venues.includes(e.venue));
+                const venuesSet = new Set(venues);
+                events = events.filter((e: any) => venuesSet.has(e.venue));
             }
             return of(events);
         }
@@ -67,7 +68,8 @@ export class EventDataService {
         localStorage.setItem(dateKey, JSON.stringify(events));
 
         if (venues && venues.length > 0) {
-            events = events.filter(e => venues.includes(e.venue));
+            const venuesSet = new Set(venues);
+            events = events.filter(e => venuesSet.has(e.venue));
         }
         return of(events).pipe(delay(10));
     }

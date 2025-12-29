@@ -1,8 +1,8 @@
 <div class="timetable-container">
     <div class="date-header-wrapper">
-        <div class="date-scroll-container" #dateScrollContainer (scroll)="onDateScroll($event)" (wheel)="onDateWheel($event)">
+        <div class="date-scroll-container" #dateScrollContainer (wheel)="onDateWheel($event)">
             <div class="date-items-row">
-                <div class="date-item" *ngFor="let day of days"
+                <div class="date-item" *ngFor="let day of days; trackBy: trackByDay"
                      [class.selected]="day.date.toDateString() === selectedDate.toDateString()"
                      (click)="selectDate(day)">
                     <div class="tab-label-content">
@@ -18,30 +18,30 @@
         </div>
     </div>
 
-    <div class="schedule-viewport" #scheduleViewport (scroll)="onScroll($event)">
+    <div class="schedule-viewport" #scheduleViewport>
         <div class="schedule-content">
 
             <div class="venue-header-row">
                 <div class="time-header-cell"></div>
-                <div class="venue-header-cell" *ngFor="let venue of venues">
+                <div class="venue-header-cell" *ngFor="let venue of venues; trackBy: trackByVenue">
                     {{ venue }}
                 </div>
             </div>
 
             <div class="schedule-body">
                 <div class="time-column">
-                    <div class="time-cell" *ngFor="let time of allTimeSlots">
+                    <div class="time-cell" *ngFor="let time of allTimeSlots; trackBy: trackByTime">
                         {{ time }}
                     </div>
                 </div>
 
 
                 <div class="events-grid">
-                    <div class="grid-column" *ngFor="let venue of venues">
-                        <div class="grid-cell" *ngFor="let time of allTimeSlots">
+                    <div class="grid-column" *ngFor="let venue of venues; trackBy: trackByVenue">
+                        <div class="grid-cell" *ngFor="let time of allTimeSlots; trackBy: trackByTime">
                         </div>
 
-                        <div class="event-card" *ngFor="let event of getEventsForVenue(venue)"
+                        <div class="event-card" *ngFor="let event of eventsByVenue[venue]; trackBy: trackByEvent"
                             [class.multi-venue]="event.isMultiVenue"
                             [ngStyle]="event | eventStyle:(allTimeSlots[0] || '08:00')">
                             <div class="event-content">
