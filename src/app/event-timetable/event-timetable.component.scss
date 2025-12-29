@@ -99,6 +99,36 @@
     display: none;
 }
 
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+.animate-slide-in {
+    animation: slideIn 300ms ease-out forwards;
+}
+
+.animate-slide-out {
+    animation: slideOut 300ms ease-in forwards;
+}
+
 .loading-overlay {
     position: absolute;
     top: 0;

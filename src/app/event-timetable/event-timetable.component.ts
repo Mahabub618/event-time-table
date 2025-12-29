@@ -1,23 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
 import { CalendarEvent } from '../models/event.model';
 import { EventDataService, Day } from '../services/event-data.service';
 
 @Component({
   selector: 'app-event-timetable',
   templateUrl: './event-timetable.component.html',
-  styleUrls: ['./event-timetable.component.scss'],
-  animations: [
-    trigger('slideInOut', [
-      transition(':leave', [
-        animate('300ms ease-in', style({ transform: 'translateX({{leaveTo}}%)', opacity: 0 }))
-      ], { params: { leaveTo: '-100' } }),
-      transition(':enter', [
-        style({ transform: 'translateX({{enterFrom}}%)', opacity: 0 }),
-        animate('300ms ease-out', style({ transform: 'translateX(0%)', opacity: 1 }))
-      ], { params: { enterFrom: '100' } })
-    ])
-  ]
+  styleUrls: ['./event-timetable.component.scss']
 })
 export class EventTimetableComponent implements OnInit, AfterViewInit {
   @ViewChild('dateScrollContainer') dateScrollContainer!: ElementRef;
